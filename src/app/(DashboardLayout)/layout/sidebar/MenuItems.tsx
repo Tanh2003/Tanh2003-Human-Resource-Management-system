@@ -1,11 +1,18 @@
 import {
   IconAperture,
+  IconBuilding,
+  IconCompass,
   IconCopy,
   IconLayoutDashboard,
+  IconList,
   IconLogin,
   IconMoodHappy,
+  IconPlaneDeparture,
   IconTypography,
+  IconUser,
+  IconUserOff,
   IconUserPlus,
+  IconUsers,
 } from "@tabler/icons-react";
 
 import { uniqueId } from "lodash";
@@ -24,12 +31,12 @@ const Menuitems = [
   },
   {
     navlabel: true,
-    subheader: "Utilities",
+    subheader: "Organization",
   },
   {
     id: uniqueId(),
-    title: "Typography",
-    icon: IconTypography,
+    title: "Department",
+    icon: IconBuilding,
     href: "/utilities/typography",
   },
   {
@@ -37,6 +44,36 @@ const Menuitems = [
     title: "Shadow",
     icon: IconCopy,
     href: "/utilities/shadow",
+  },
+  {
+    navlabel: true,
+    subheader: "Employees",
+  },
+  {
+    id: uniqueId(),
+    title: "Employees",
+    icon: IconUsers,
+    href: "/authentication/login",
+  },
+  {
+    navlabel: true,
+    subheader: "Leave",
+  },
+  {
+    id: uniqueId(),
+    title: "Request leave",
+    icon: IconUserOff,
+    href: "/authentication/login",
+  },
+  {
+    navlabel: true,
+    subheader: "Payroll",
+  },
+  {
+    id: uniqueId(),
+    title: "Payroll List",
+    icon: IconList,
+    href: "/authentication/login",
   },
   {
     navlabel: true,
@@ -66,7 +103,7 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
-    title: "Sample Page",
+    title: "Danh sách nhân viên",
     icon: IconAperture,
     href: "/sample-page",
   },
