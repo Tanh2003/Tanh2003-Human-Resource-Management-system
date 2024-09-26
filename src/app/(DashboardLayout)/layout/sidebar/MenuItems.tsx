@@ -31,6 +31,16 @@ const Menuitems = [
   },
   {
     navlabel: true,
+    subheader: "Account",
+  },
+  {
+    id: uniqueId(),
+    title: "Account List ",
+    icon: IconList,
+    href: "/account",
+  },
+  {
+    navlabel: true,
     subheader: "Organization",
   },
   {
@@ -53,7 +63,13 @@ const Menuitems = [
     id: uniqueId(),
     title: "Employees",
     icon: IconUsers,
-    href: "/authentication/login",
+    href: "/employees",
+  },
+  {
+    id: uniqueId(),
+    title: "Information Employee",
+    icon: IconUsers,
+    href: "/information-employees",
   },
   {
     navlabel: true,

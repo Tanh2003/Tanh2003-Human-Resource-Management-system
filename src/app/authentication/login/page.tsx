@@ -1,13 +1,43 @@
 "use client";
-import Link from "next/link";
-import { Grid, Box, Card, Stack, Typography } from "@mui/material";
+import { Grid, Box, Card, Stack, Typography, Alert } from "@mui/material";
 // components
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
 import AuthLogin from "../auth/AuthLogin";
+import { handleSignIn } from "@/ServicesAdmin";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const Login2 = () => {
-   
+  const router = useRouter();
+  const [message, setMessage] = useState<string | null>(null); // State quản lý thông báo
+  const [error, setError] = useState<boolean>(false); // State quản lý thông báo lỗi hay thành công
+  
+  const postUserData = async (email: string, password: string) => {
+    try {
+      const response = await handleSignIn(email, password);
+
+      if (response.errCode === 0) {
+        setMessage("Sign In successfully!"); // Thông báo thành công
+        toast.success(response.errMessage);
+        router.push("/");
+
+        setError(false); // Không phải là lỗi
+        // Xử lý điều hướng hoặc các bước tiếp theo nếu cần
+      } else {
+        toast.error(response.errMessage);
+        console.log();
+        setMessage(response.errMessage); // Hiển thị thông báo lỗi từ server
+        setError(true); // Đây là thông báo lỗi
+      }
+    } catch (error) {
+      setMessage("Có lỗi xảy ra. Vui lòng thử lại."); // Thông báo lỗi nếu có ngoại lệ
+      setError(true);
+      console.error("Error fetching data", error);
+    }
+  };
+
   return (
     <PageContainer title="Login" description="this is Login page">
       <Box
@@ -48,7 +78,18 @@ const Login2 = () => {
               <Box display="flex" alignItems="center" justifyContent="center">
                 <Logo />
               </Box>
+              {/* Hiển thị thông báo lỗi hoặc thành công */}
+              {message && (
+                <Alert
+                  severity={error ? "error" : "success"}
+                  sx={{ mb: 2, fontStyle: 20 }}
+                >
+                  {message}
+                </Alert>
+              )}
+
               <AuthLogin
+                onSubmit={postUserData} // Truyền hàm postUserData vào AuthLogin
                 subtext={
                   <Typography
                     variant="subtitle1"
@@ -56,7 +97,7 @@ const Login2 = () => {
                     color="textSecondary"
                     mb={1}
                   >
-                    Your Social Campaigns
+                    Chào mừng bạn đến với manager HR
                   </Typography>
                 }
                 subtitle={
@@ -71,18 +112,7 @@ const Login2 = () => {
                       variant="h6"
                       fontWeight="500"
                     >
-                      New to Modernize?
-                    </Typography>
-                    <Typography
-                      component={Link}
-                      href="/authentication/register"
-                      fontWeight="500"
-                      sx={{
-                        textDecoration: "none",
-                        color: "primary.main",
-                      }}
-                    >
-                      Create an account
+                      Desgin by Nguyễn Tuấn Anh
                     </Typography>
                   </Stack>
                 }
@@ -94,4 +124,5 @@ const Login2 = () => {
     </PageContainer>
   );
 };
+
 export default Login2;

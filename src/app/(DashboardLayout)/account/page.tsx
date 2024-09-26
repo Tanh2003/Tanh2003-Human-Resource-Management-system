@@ -55,7 +55,7 @@ const validationSchema = yup.object({
   role: yup.string().required("Role number is required"),
 });
 
-const SamplePage = () => {
+const Account = () => {
   // Khởi tạo state để lưu dữ liệu từ API
   const [rows, setRows] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
@@ -248,7 +248,7 @@ const SamplePage = () => {
   const handleAdd = async (data: any) => {
     // Include repassword in the logged data
 
-   await postUserData({
+    await postUserData({
       email: data.email,
       password: data.password,
       role: data.role,
@@ -258,18 +258,18 @@ const SamplePage = () => {
   };
 
   // Hàm xử lý Edit
-  const handleEdit =async (row: any) => {
+  const handleEdit = async (row: any) => {
     setOpen(true);
     setUpdate(true);
 
     const userId = row._id; // Lấy _id từ row
     console.log("Edit user with _id: ", userId);
     // Thực hiện các thao tác tiếp theo với _id
-   await getUserIdData(userId);
+    await getUserIdData(userId);
     setUserId(userId);
   };
-  const handleUpdate =async (data: any) => {
-   await putUserData({
+  const handleUpdate = async (data: any) => {
+    await putUserData({
       UserId: userId,
       email: data.email,
       password: data.password,
@@ -281,7 +281,7 @@ const SamplePage = () => {
   };
 
   // Hàm xử lý Delete
-  const handleDelete =async (row: any) => {
+  const handleDelete = async (row: any) => {
     const userId = row._id; // Lấy _id từ row
     console.log("delete user with _id: ", userId);
     await deleteUserData(userId);
@@ -468,7 +468,7 @@ const SamplePage = () => {
             color="primary"
             variant="contained"
           >
-            Submit
+            {update ? "Update" : "Add"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -476,4 +476,4 @@ const SamplePage = () => {
   );
 };
 
-export default SamplePage;
+export default Account;
