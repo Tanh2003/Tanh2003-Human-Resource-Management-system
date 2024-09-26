@@ -7,6 +7,8 @@ interface IUser {
 }
 
 interface IEmployee {
+  employeesId:string;
+  userId:string;
   fullName: string;
   age: string;
   gender: string;

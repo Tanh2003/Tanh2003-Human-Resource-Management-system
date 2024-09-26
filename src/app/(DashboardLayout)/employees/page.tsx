@@ -8,6 +8,7 @@ import {
   handleAddEmployees,
   handleDeleteEmployees,
   handleUpdateEmployees,
+  handleListAccount,
 } from "../../../ServicesAdmin";
 import CircularProgress from "@mui/material/CircularProgress";
 import {
@@ -56,6 +57,7 @@ const validationSchema = yup.object({
     .min(0, "Leave Balance must be a positive number"),
 });
 
+
 // Hàm Employees chính
 const Employees = () => {
   const router = useRouter();
@@ -64,11 +66,20 @@ const Employees = () => {
   const [open, setOpen] = React.useState(false);
   const [update, setUpdate] = React.useState(false);
   const [EmployeesId, setEmployeesId] = React.useState("");
+  const [userOptions, setUserOptions] = React.useState([]);
 
   React.useEffect(() => {
     getEmployeesData();
+    getUserData();
   }, []);
 
+  const formatDateToYYYYMMDD = (dateString:any) => {
+    const parts = dateString.split("/"); // Chia nhỏ chuỗi theo '/'
+    return `${parts[2]}-${parts[1].padStart(2, "0")}-${parts[0].padStart(
+      2,
+      "0"
+    )}`; // Định dạng thành yyyy-MM-dd
+  };
   const getEmployeesData = async () => {
     try {
       const response = await handleListEmployees("ALL");
@@ -77,7 +88,10 @@ const Employees = () => {
           (Employees: any, index: number) => ({
             id: index + 1,
             _id: Employees._id,
+            employeesId: Employees.employeesId,
+            userId: Employees.userId,
             fullName: Employees.fullName,
+            phonenumber: Employees.phonenumber,
             age: Employees.age,
             gender: Employees.gender,
             birthday: new Date(Employees.birthday).toLocaleDateString(),
@@ -88,7 +102,26 @@ const Employees = () => {
             leaveBalance: Employees.leaveBalance,
           })
         );
+      
+        
         setRows(Employeess);
+      }
+    } catch (error) {
+      console.error("Error fetching data", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const getUserData = async () => {
+    try {
+      const response = await handleListAccount("ALL");
+      if (response.errCode === 0) {
+        // Lưu dữ liệu vào userOptions
+        const users = response.allUsers.map((user:any) => ({
+          _id: user._id,
+          email: user.email,
+        }));
+        setUserOptions(users);
       }
     } catch (error) {
       console.error("Error fetching data", error);
@@ -147,7 +180,7 @@ const Employees = () => {
 
   const handleUpdate = async (data: any) => {
     await putEmployeesData({
-      EmployeesId: EmployeesId,
+      EmployeeId: EmployeesId,
       ...data,
     });
     await getEmployeesData();
@@ -161,23 +194,37 @@ const Employees = () => {
     // Thực hiện xử lý Delete
   };
 
+  const formatDate = (dateString:any) => {
+    const dateParts = dateString.split("/"); // Split the date by "/"
+    const day = dateParts[1].padStart(2, "0"); // Get day and ensure 2 digits
+    const month = dateParts[0].padStart(2, "0"); // Get month and ensure 2 digits
+    const year = dateParts[2]; // Get year
+    return `${year}-${month}-${day}`; // Return in "YYYY-MM-DD" format
+  };
   const handleEdit = async (row: any) => {
     setOpen(true);
     setUpdate(true);
     const EmployeesId = row._id;
     setEmployeesId(EmployeesId);
-    formik.setValues(row);
+    console.log("du lieu ne:"+row.userId);
+    formik.setValues({
+      ...row,
+      birthday: formatDate(row.birthday),
+      hireDate: formatDate(row.hireDate),
+    });
   };
-const handleRowClick = (params: GridRowParams) => {
-  console.log("Row _id:", params.row._id);
+const handleRowClick = (row: any) => {
+  console.log("Row _id:", row._id);
   // Xử lý thêm logic khi cần thiết, ví dụ như điều hướng đến trang chi tiết
-  router.push(`/employees/${params.row._id}`);
+  router.push(`/employees/${row._id}`);
 
 
 };
 
-  const formik: FormikProps<IEmployee> = useFormik({
+  const formik: FormikProps<IEmployee> =useFormik({
     initialValues: {
+      employeesId:"",
+      userId:"",
       fullName: "",
       age: "",
       gender: "",
@@ -209,7 +256,8 @@ const handleRowClick = (params: GridRowParams) => {
 
   const columns = React.useMemo(
     () => [
-      { field: "id", headerName: "ID", width: 70 },
+      { field: "id", headerName: "STT", width: 70 },
+      { field: "employeesId", headerName: "Employee ID ", width: 100 },
       { field: "fullName", headerName: "Full Name", width: 200 },
       { field: "age", headerName: "Age", width: 100 },
       { field: "gender", headerName: "Gender", width: 100 },
@@ -222,9 +270,19 @@ const handleRowClick = (params: GridRowParams) => {
       {
         field: "Action",
         headerName: "Action",
-        width: 200,
+        width: 300,
         renderCell: (params: any) => (
           <>
+            <Button
+              variant="contained"
+              color="success"
+              size="small"
+              onClick={() => handleRowClick(params.row)}
+             
+              style={{ marginRight: 10 }}
+            >
+              Details
+            </Button>
             <Button
               variant="contained"
               color="primary"
@@ -274,7 +332,6 @@ const handleRowClick = (params: GridRowParams) => {
                   showQuickFilter: true,
                 },
               }}
-              onRowClick={handleRowClick}
             />
           )}
         </Box>
@@ -441,6 +498,26 @@ const handleRowClick = (params: GridRowParams) => {
                     formik.touched.leaveBalance && formik.errors.leaveBalance
                   }
                 />
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="userId-label">User</InputLabel>
+                  <Select
+                    labelId="userId-label"
+                    id="userId"
+                    name="userId"
+                    label="User"
+                    value={formik.values.userId}
+                    onChange={formik.handleChange}
+                  >
+                    {/* Hiển thị danh sách người dùng từ userOptions */}
+                    {userOptions.map((user: any) => (
+                      <MenuItem key={user._id} value={user._id}>
+                        {user.email}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
             </Grid>
             <DialogActions>
