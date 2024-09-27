@@ -73,13 +73,6 @@ const Employees = () => {
     getUserData();
   }, []);
 
-  const formatDateToYYYYMMDD = (dateString:any) => {
-    const parts = dateString.split("/"); // Chia nhỏ chuỗi theo '/'
-    return `${parts[2]}-${parts[1].padStart(2, "0")}-${parts[0].padStart(
-      2,
-      "0"
-    )}`; // Định dạng thành yyyy-MM-dd
-  };
   const getEmployeesData = async () => {
     try {
       const response = await handleListEmployees("ALL");
@@ -259,14 +252,12 @@ const handleRowClick = (row: any) => {
       { field: "id", headerName: "STT", width: 70 },
       { field: "employeesId", headerName: "Employee ID ", width: 100 },
       { field: "fullName", headerName: "Full Name", width: 200 },
-      { field: "age", headerName: "Age", width: 100 },
-      { field: "gender", headerName: "Gender", width: 100 },
-      { field: "birthday", headerName: "Birthday", width: 150 },
+ 
       { field: "department", headerName: "Department", width: 150 },
       { field: "position", headerName: "Position", width: 150 },
-      { field: "salary", headerName: "Salary", width: 150 },
+    
       { field: "hireDate", headerName: "Hire Date", width: 150 },
-      { field: "leaveBalance", headerName: "Leave Balance", width: 150 },
+     
       {
         field: "Action",
         headerName: "Action",

@@ -65,12 +65,7 @@ const Menuitems = [
     icon: IconUsers,
     href: "/employees",
   },
-  {
-    id: uniqueId(),
-    title: "Information Employee",
-    icon: IconUsers,
-    href: "/information-employees",
-  },
+
   {
     navlabel: true,
     subheader: "Leave",

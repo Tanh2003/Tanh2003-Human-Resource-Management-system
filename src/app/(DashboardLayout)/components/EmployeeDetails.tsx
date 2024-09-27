@@ -20,6 +20,7 @@ import PaidIcon from "@mui/icons-material/Paid";
 
 interface Employee {
   fullName: string;
+  employeesId:string
   age: number;
   gender: string;
   birthday: string;
@@ -29,15 +30,26 @@ interface Employee {
   salary: number;
   hireDate: string;
   leaveBalance: number;
-  userId: number;
+  userId: {
+    _id: string;
+    email: string;
+  };
 }
 
 type EmployeeDetailsProps = {
   employee: Employee;
 };
 
-const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employee }) => {
 
+const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employee }) => {
+const formatDate = (isoDateString: string): string => {
+  const date = new Date(isoDateString); // Tạo đối tượng Date từ chuỗi ISO
+  const day = date.getDate().toString().padStart(2, "0"); // Lấy ngày và thêm 0 nếu cần
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Lấy tháng (cộng thêm 1 vì tháng bắt đầu từ 0)
+  const year = date.getFullYear(); // Lấy năm
+
+  return `${day}-${month}-${year}`; // Trả về chuỗi định dạng ngày-tháng-năm
+};
   return (
     <Paper
       elevation={3}
@@ -72,8 +84,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employee }) => {
 
       <CardContent>
         <Grid container spacing={3}>
-          {" "}
-          {/* Tăng khoảng cách giữa các item */}
           <Grid item xs={12} sm={6}>
             <Box display="flex" alignItems="center">
               <Icon color="primary" sx={{ mr: 1 }}>
@@ -82,7 +92,56 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employee }) => {
               <Typography variant="h6">
                 {" "}
                 {/* Tăng kích thước */}
-                <strong>Birthday:</strong> {employee.birthday}
+                <strong>Account:</strong> {employee.userId.email}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Box display="flex" alignItems="center">
+              <Icon color="primary" sx={{ mr: 1 }}>
+                <CalendarTodayIcon />
+              </Icon>
+              <Typography variant="h6">
+                {" "}
+                {/* Tăng kích thước */}
+                <strong>Employee ID:</strong> {employee.employeesId}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Box display="flex" alignItems="center">
+              <Icon color="primary" sx={{ mr: 1 }}>
+                <CalendarTodayIcon />
+              </Icon>
+              <Typography variant="h6">
+                {" "}
+                {/* Tăng kích thước */}
+                <strong>Age:</strong> {employee.age}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Box display="flex" alignItems="center">
+              <Icon color="primary" sx={{ mr: 1 }}>
+                <CalendarTodayIcon />
+              </Icon>
+              <Typography variant="h6">
+                {" "}
+                {/* Tăng kích thước */}
+                <strong>Gender:</strong> {employee.gender}
+              </Typography>
+            </Box>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <Box display="flex" alignItems="center">
+              <Icon color="primary" sx={{ mr: 1 }}>
+                <CalendarTodayIcon />
+              </Icon>
+              <Typography variant="h6">
+                {" "}
+                {/* Tăng kích thước */}
+                <strong>Birthday:</strong> {formatDate(employee.birthday)}
               </Typography>
             </Box>
           </Grid>
@@ -95,6 +154,18 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employee }) => {
                 {" "}
                 {/* Tăng kích thước */}
                 <strong>Phone:</strong> {employee.phonenumber}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Box display="flex" alignItems="center">
+              <Icon color="primary" sx={{ mr: 1 }}>
+                <WorkIcon />
+              </Icon>
+              <Typography variant="h6">
+                {" "}
+                {/* Tăng kích thước */}
+                <strong>Position:</strong> {employee.position}
               </Typography>
             </Box>
           </Grid>
@@ -130,7 +201,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employee }) => {
               <Typography variant="h6">
                 {" "}
                 {/* Tăng kích thước */}
-                <strong>Hire Date:</strong> {employee.hireDate}
+                <strong>Hire Date:</strong> {formatDate(employee.hireDate)}
               </Typography>
             </Box>
           </Grid>
@@ -155,7 +226,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employee }) => {
         <Typography variant="h6" color="textSecondary">
           {" "}
           {/* Tăng kích thước */}
-          <strong>ID:</strong> {employee.userId}
+          <strong>Employee ID:</strong> {employee.employeesId}
         </Typography>
       </Box>
     </Paper>

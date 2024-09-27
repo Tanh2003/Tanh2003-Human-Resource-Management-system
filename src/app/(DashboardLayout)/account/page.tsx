@@ -433,9 +433,9 @@ const Account = () => {
                     onBlur={formik.handleBlur} // Optional: handle onBlur for touched state
                   >
                     {/* Các tùy chọn (menu items) */}
-                    <MenuItem value="option1">Option 1</MenuItem>
-                    <MenuItem value="option2">Option 2</MenuItem>
-                    <MenuItem value="option3">Option 3</MenuItem>
+                    <MenuItem value="admin">Admin</MenuItem>
+                    <MenuItem value="user">User</MenuItem>
+                    
                     {/* Thêm các tùy chọn khác nếu cần */}
                   </Select>
                   {formik.touched.role && formik.errors.role && (
