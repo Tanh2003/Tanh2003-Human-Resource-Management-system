@@ -8,6 +8,7 @@ import {
   handleAddPayroll,
   handleDeletePayroll,
   handleUpdatePayroll,
+  handleListEmployees,
 } from "../../../ServicesAdmin";
 import "../../../interFace/users";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -51,24 +52,29 @@ const Payroll = () => {
   const [open, setOpen] = React.useState(false);
   const [update, setUpdate] = React.useState(false);
   const [PayrollId, setPayrollId] = React.useState("");
+  const [employeeOptions, setEmployeeOptions] = React.useState([]);
 
   // Gọi API khi component được render lần đầu tiên
   React.useEffect(() => {
     getPayrollData();
+    getEmployeeData();
   }, []);
 
   const getPayrollData = async () => {
     try {
       const response = await handleListPayroll("ALL");
       if (response.errCode === 0) {
+       
+        
         const Payroll = response.allPayroll.map(
           (Payroll: any, index: number) => ({
             id: index + 1,
             _id: Payroll._id,
+            employee_id: Payroll.employee_id.employeesId,
             salary: Payroll.salary,
             bonus: Payroll.bonus,
             deductions: Payroll.deductions,
-            pay_date: Payroll.pay_date,
+            pay_date: new Date(Payroll.pay_date).toLocaleDateString("en-GB"),
           })
         );
         setRows(Payroll);
@@ -85,11 +91,15 @@ const Payroll = () => {
       const response = await handleListPayroll(PayrollId);
       if (response.errCode === 0) {
         const Payroll = response.allPayroll;
+        const formattedDate = new Date(Payroll.pay_date)
+          .toISOString()
+          .split("T")[0];
         formik.setValues({
+          employee_id: Payroll.employee_id._id,
           salary: Payroll.salary,
           bonus: Payroll.bonus,
           deductions: Payroll.deductions,
-          pay_date: Payroll.pay_date,
+          pay_date: formattedDate,
         });
       }
     } catch (error) {
@@ -98,7 +108,23 @@ const Payroll = () => {
       setLoading(false);
     }
   };
-
+ const getEmployeeData = async () => {
+   try {
+     const response = await handleListEmployees("ALL");
+     if (response.errCode === 0) {
+       const employees = response.allEmployees.map((employees: any) => ({
+         _id: employees._id,
+         employeesId: employees.employeesId,
+         fullName: employees.fullName,
+       }));
+       setEmployeeOptions(employees);
+     }
+   } catch (error) {
+     console.error("Error fetching data", error);
+   } finally {
+     setLoading(false);
+   }
+ };
   const postPayrollData = async (data: any) => {
     try {
       const response = await handleAddPayroll(data);
@@ -146,6 +172,7 @@ const Payroll = () => {
   const columns = React.useMemo(
     () => [
       { field: "id", headerName: "ID", width: 70 },
+      { field: "employee_id", headerName: "Employee ID", width: 200 },
       { field: "salary", headerName: "Salary", width: 200 },
       { field: "bonus", headerName: "Bonus", width: 200 },
       { field: "deductions", headerName: "Deductions", width: 200 },
@@ -187,10 +214,11 @@ const Payroll = () => {
     setOpen(true);
     console.log("them" + update);
     formik.setValues({
+      employee_id: "",
       salary: "",
       bonus: "",
       deductions: "",
-      pay_date: ""
+      pay_date: "",
     });
   };
 
@@ -200,6 +228,7 @@ const Payroll = () => {
 
   const handleAdd = async (data: any) => {
     await postPayrollData({
+      employee_id: data.employee_id,
       salary: data.salary,
       bonus: data.bonus,
       deductions: data.deductions,
@@ -219,6 +248,7 @@ const Payroll = () => {
   const handleUpdate = async (data: any) => {
     await putPayrollData({
       PayrollId: PayrollId,
+      employee_id: data.employee_id,
       salary: data.salary,
       bonus: data.bonus,
       deductions: data.deductions,
@@ -237,6 +267,7 @@ const Payroll = () => {
     update === false
       ? {
           initialValues: {
+            employee_id: "",
             salary: "",
             bonus: "",
             deductions: "",
@@ -252,7 +283,8 @@ const Payroll = () => {
         }
       : {
           initialValues: {
-              salary: "",
+            employee_id: "",
+            salary: "",
             bonus: "",
             deductions: "",
             pay_date: "",
@@ -379,6 +411,26 @@ const Payroll = () => {
                   }
                   helperText={formik.touched.pay_date && formik.errors.pay_date}
                 />
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="employee_id-label">Employees</InputLabel>
+                  <Select
+                    labelId="employee_id"
+                    id="employee_id"
+                    name="employee_id"
+                    label="Employees"
+                    value={formik.values.employee_id}
+                    onChange={formik.handleChange}
+                  >
+                    {/* Hiển thị danh sách người dùng từ userOptions */}
+                    {employeeOptions.map((employees: any) => (
+                      <MenuItem key={employees._id} value={employees._id}>
+                        {employees.employeesId}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
             </Grid>
           </form>

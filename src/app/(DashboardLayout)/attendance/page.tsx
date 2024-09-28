@@ -8,6 +8,7 @@ import {
   handleAddAttendance,
   handleDeleteAttendance,
   handleUpdateAttendance,
+  handleListEmployees,
 } from "../../../ServicesAdmin";
 import "../../../interFace/users";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -47,51 +48,97 @@ const Attendance = () => {
   const [open, setOpen] = React.useState(false);
   const [update, setUpdate] = React.useState(false);
   const [AttendanceId, setAttendanceId] = React.useState("");
+  const [employeeOptions, setEmployeeOptions] = React.useState([]);
 
   // Gọi API khi component được render lần đầu tiên
   React.useEffect(() => {
     getAttendanceData();
+    getEmployeeData();
   }, []);
 
-  const getAttendanceData = async () => {
-    try {
-      const response = await handleListAttendance("ALL");
-      if (response.errCode === 0) {
-        const Attendance = response.allAttendance.map(
-          (Attendance: any, index: number) => ({
-            id: index + 1,
-            _id: Attendance._id,
-            date: Attendance.date,
-            check_in: Attendance.check_in,
-            check_out: Attendance.check_out,
-          })
-        );
-        setRows(Attendance);
-      }
-    } catch (error) {
-      console.error("Error fetching data", error);
-    } finally {
-      setLoading(false);
+const getAttendanceData = async () => {
+  try {
+    const response = await handleListAttendance("ALL");
+    if (response.errCode === 0) {
+      const Attendance = response.allAttendance.map(
+        (Attendance: any, index: number) => ({
+          id: index + 1,
+          _id: Attendance._id,
+          employee_id: Attendance.employee_id.employeesId,
+          date: new Date(Attendance.date).toLocaleDateString("en-GB"),
+          check_in: new Date(Attendance.check_in).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          check_out: new Date(Attendance.check_out).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        })
+      );
+      setRows(Attendance);
     }
-  };
+  } catch (error) {
+    console.error("Error fetching data", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const getAttendanceIdData = async (AttendanceId: any) => {
     try {
       const response = await handleListAttendance(AttendanceId);
       if (response.errCode === 0) {
         const Attendance = response.allAttendance;
+        const formattedDate = new Date(Attendance.date).toISOString().split("T")[0];
+        const formattedCheckIn = new Date(
+          Attendance.check_in
+        ).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false, // Sử dụng định dạng 24 giờ
+        });
+        const formattedCheckOut = new Date(
+          Attendance.check_out
+        ).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false, // Sử dụng định dạng 24 giờ
+        });
         formik.setValues({
-          date: Attendance.date,
-          check_in: Attendance.check_in,
-          check_out: Attendance.check_out,
+          employee_id: Attendance.employee_id._id,
+          date: formattedDate,
+          check_in: formattedCheckIn,
+          check_out: formattedCheckOut,
         });
       }
+      console.log(formik.values.check_in);
     } catch (error) {
       console.error("Error fetching data", error);
     } finally {
       setLoading(false);
     }
   };
+
+
+    const getEmployeeData = async () => {
+      try {
+        const response = await handleListEmployees("ALL");
+        if (response.errCode === 0) {
+          const employees = response.allEmployees.map((employees: any) => ({
+            _id: employees._id,
+            employeesId: employees.employeesId,
+            fullName: employees.fullName,
+          }));
+          setEmployeeOptions(employees);
+        }
+      } catch (error) {
+        console.error("Error fetching data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
   const postAttendanceData = async (data: any) => {
     try {
@@ -140,6 +187,7 @@ const Attendance = () => {
   const columns = React.useMemo(
     () => [
       { field: "id", headerName: "ID", width: 70 },
+      { field: "employee_id", headerName: "Employee ID", width: 200 },
       { field: "date", headerName: "Date", width: 200 },
       { field: "check_in", headerName: "Check In", width: 200 },
       { field: "check_out", headerName: "Check Out", width: 200 },
@@ -180,6 +228,7 @@ const Attendance = () => {
     setOpen(true);
     console.log("them" + update);
     formik.setValues({
+      employee_id:"",
       date: "",
       check_in: "",
       check_out: "",
@@ -192,6 +241,7 @@ const Attendance = () => {
 
   const handleAdd = async (data: any) => {
     await postAttendanceData({
+      employee_id: data.employee_id,
       date: data.date,
       check_in: data.check_in,
       check_out: data.check_out,
@@ -210,6 +260,7 @@ const Attendance = () => {
   const handleUpdate = async (data: any) => {
     await putAttendanceData({
       AttendanceId: AttendanceId,
+      employee_id:data.employee_id,
       date: data.date,
       check_in: data.check_in,
       check_out: data.check_out,
@@ -227,6 +278,7 @@ const Attendance = () => {
     update === false
       ? {
           initialValues: {
+            employee_id: "",
             date: "",
             check_in: "",
             check_out: "",
@@ -241,6 +293,7 @@ const Attendance = () => {
         }
       : {
           initialValues: {
+            employee_id: "",
             date: "",
             check_in: "",
             check_out: "",
@@ -326,7 +379,10 @@ const Attendance = () => {
                   id="check_in"
                   name="check_in"
                   label="Check In"
-                  type="text"
+                  type="time"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   value={formik.values.check_in}
                   onChange={formik.handleChange}
                   error={
@@ -342,7 +398,10 @@ const Attendance = () => {
                   id="check_out"
                   name="check_out"
                   label="Check Out"
-                  type="text"
+                  type="time"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   value={formik.values.check_out}
                   onChange={formik.handleChange}
                   error={
@@ -353,6 +412,27 @@ const Attendance = () => {
                   }
                 />
               </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="employee_id-label">Employees</InputLabel>
+                  <Select
+                    labelId="employee_id"
+                    id="employee_id"
+                    name="employee_id"
+                    label="Employees"
+                    value={formik.values.employee_id}
+                    onChange={formik.handleChange}
+                  >
+                    {/* Hiển thị danh sách người dùng từ userOptions */}
+                    {employeeOptions.map((employees: any) => (
+                      <MenuItem key={employees._id} value={employees._id}>
+                        {employees.employeesId}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              
             </Grid>
           </form>
         </DialogContent>

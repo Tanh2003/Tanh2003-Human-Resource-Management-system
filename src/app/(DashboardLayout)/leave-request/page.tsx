@@ -8,6 +8,8 @@ import {
   handleAddLeaveRequest,
   handleDeleteLeaveRequest,
   handleUpdateLeaveRequest,
+  handleListAttendance,
+  handleListEmployees,
 } from "../../../ServicesAdmin";
 import "../../../interFace/users";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -48,10 +50,12 @@ const LeaveRequest = () => {
   const [open, setOpen] = React.useState(false);
   const [update, setUpdate] = React.useState(false);
   const [LeaveRequestId, setLeaveRequestId] = React.useState("");
+  const [employeeOptions, setEmployeeOptions] = React.useState([]);
 
   // Gọi API khi component được render lần đầu tiên
   React.useEffect(() => {
     getLeaveRequestData();
+    getEmployeeData();
   }, []);
 
   const getLeaveRequestData = async () => {
@@ -62,8 +66,9 @@ const LeaveRequest = () => {
           (LeaveRequest: any, index: number) => ({
             id: index + 1,
             _id: LeaveRequest._id,
-            start_date: LeaveRequest.start_date,
-            end_date: LeaveRequest.end_date,
+            employee_id: LeaveRequest.employee_id.employeesId,
+            start_date: new Date(LeaveRequest.start_date).toLocaleDateString("en-GB"),
+            end_date: new Date(LeaveRequest.end_date).toLocaleDateString("en-GB"),
             status: LeaveRequest.status,
             reason: LeaveRequest.reason,
           })
@@ -82,9 +87,17 @@ const LeaveRequest = () => {
       const response = await handleListLeaveRequest(LeaveRequestId);
       if (response.errCode === 0) {
         const LeaveRequest = response.allLeaveRequest;
+        const formattedSDate = new Date(LeaveRequest.start_date)
+          .toISOString()
+          .split("T")[0];
+        const formattedEDate = new Date(LeaveRequest.end_date)
+          .toISOString()
+          .split("T")[0];
+       
         formik.setValues({
-          start_date: LeaveRequest.start_date,
-          end_date: LeaveRequest.end_date,
+          employee_id: LeaveRequest.employee_id._id,
+          start_date: formattedSDate,
+          end_date: formattedEDate,
           status: LeaveRequest.status,
           reason: LeaveRequest.reason,
         });
@@ -95,6 +108,24 @@ const LeaveRequest = () => {
       setLoading(false);
     }
   };
+   const getEmployeeData = async () => {
+     try {
+       const response = await handleListEmployees("ALL");
+       if (response.errCode === 0) {
+         const employees = response.allEmployees.map((employees: any) => ({
+           _id: employees._id,
+           employeesId: employees.employeesId,
+           fullName: employees.fullName,
+         }));
+         setEmployeeOptions(employees);
+       }
+     } catch (error) {
+       console.error("Error fetching data", error);
+     } finally {
+       setLoading(false);
+     }
+   };
+
 
   const postLeaveRequestData = async (data: any) => {
     try {
@@ -142,10 +173,11 @@ const LeaveRequest = () => {
 
   const columns = React.useMemo(
     () => [
-      { field: "id", headerName: "ID", width: 70 },
-      { field: "start_date", headerName: "Start Date", width: 200 },
-      { field: "end_date", headerName: "End Date", width: 200 },
-      { field: "status", headerName: "Status", width: 200 },
+      { field: "id", headerName: "ID", width: 20 },
+      { field: "employee_id", headerName: "Employee ID", width: 100 },
+      { field: "start_date", headerName: "Start Date", width: 100 },
+      { field: "end_date", headerName: "End Date", width: 100 },
+      { field: "status", headerName: "Status", width: 100 },
       { field: "reason", headerName: "Reason", width: 200 },
       {
         field: "Action",
@@ -184,6 +216,7 @@ const LeaveRequest = () => {
     setOpen(true);
     console.log("them" + update);
     formik.setValues({
+      employee_id: "",
       start_date: "",
       end_date: "",
       status: "",
@@ -197,6 +230,7 @@ const LeaveRequest = () => {
 
   const handleAdd = async (data: any) => {
     await postLeaveRequestData({
+      employee_id: data.employee_id,
       start_date: data.start_date,
       end_date: data.end_date,
       status: data.status,
@@ -216,6 +250,7 @@ const LeaveRequest = () => {
   const handleUpdate = async (data: any) => {
     await putLeaveRequestData({
       LeaveRequestId: LeaveRequestId,
+      employee_id: data.employee_id,
       start_date: data.start_date,
       end_date: data.end_date,
       status: data.status,
@@ -234,6 +269,7 @@ const LeaveRequest = () => {
     update === false
       ? {
           initialValues: {
+            employee_id: "",
             start_date: "",
             end_date: "",
             status: "",
@@ -249,6 +285,7 @@ const LeaveRequest = () => {
         }
       : {
           initialValues: {
+            employee_id: "",
             start_date: "",
             end_date: "",
             status: "",
@@ -265,8 +302,8 @@ const LeaveRequest = () => {
   );
 
   return (
-    <PageContainer title="LeaveRequest List" description="LeaveRequest List">
-      <DashboardCard title="LeaveRequest List">
+    <PageContainer title="Leave Request List" description="Leave Request List">
+      <DashboardCard title="Leave Request List">
         <Box sx={{ height: 500, width: 1 }}>
           <Button
             variant="contained"
@@ -379,6 +416,26 @@ const LeaveRequest = () => {
                   error={formik.touched.reason && Boolean(formik.errors.reason)}
                   helperText={formik.touched.reason && formik.errors.reason}
                 />
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="employee_id-label">Employees</InputLabel>
+                  <Select
+                    labelId="employee_id"
+                    id="employee_id"
+                    name="employee_id"
+                    label="Employees"
+                    value={formik.values.employee_id}
+                    onChange={formik.handleChange}
+                  >
+                    {/* Hiển thị danh sách người dùng từ userOptions */}
+                    {employeeOptions.map((employees: any) => (
+                      <MenuItem key={employees._id} value={employees._id}>
+                        {employees.employeesId}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
             </Grid>
           </form>

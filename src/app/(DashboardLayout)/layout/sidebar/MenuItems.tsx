@@ -93,13 +93,13 @@ const Menuitems = [
   },
   {
     navlabel: true,
-    subheader: "Attention",
+    subheader: "Attendance",
   },
   {
     id: uniqueId(),
-    title: "Attention",
+    title: "Attendance",
     icon: PublishedWithChangesIcon,
-    href: "/attention",
+    href: "/attendance",
   },
   {
     navlabel: true,

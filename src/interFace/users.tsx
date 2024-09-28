@@ -32,6 +32,7 @@ interface IDepartment {
 }
 
 interface IPayroll {
+  employee_id: string;
   salary: string;
   bonus: string;
   deductions: string;
@@ -39,6 +40,7 @@ interface IPayroll {
 }
 
 interface ILeaveRequest {
+  employee_id: string;
   start_date: string;
   end_date: string;
   status: string;
@@ -47,6 +49,7 @@ interface ILeaveRequest {
 
 
 interface IAttendance {
+  employee_id:string;
   date: string;
   check_in: string;
   check_out: string;
