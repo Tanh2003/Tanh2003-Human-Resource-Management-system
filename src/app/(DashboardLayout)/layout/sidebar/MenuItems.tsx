@@ -8,12 +8,17 @@ import {
   IconLogin,
   IconMoodHappy,
   IconPlaneDeparture,
+  IconPodium,
+  IconPoint,
   IconTypography,
   IconUser,
   IconUserOff,
   IconUserPlus,
   IconUsers,
 } from "@tabler/icons-react";
+import PersonPinIcon from "@mui/icons-material/PersonPin";
+import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
 import { uniqueId } from "lodash";
 
@@ -47,13 +52,13 @@ const Menuitems = [
     id: uniqueId(),
     title: "Department",
     icon: IconBuilding,
-    href: "/utilities/typography",
+    href: "/department",
   },
   {
     id: uniqueId(),
-    title: "Shadow",
-    icon: IconCopy,
-    href: "/utilities/shadow",
+    title: "Position",
+    icon: PersonPinIcon,
+    href: "/position",
   },
   {
     navlabel: true,
@@ -72,9 +77,9 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
-    title: "Request leave",
+    title: "leave Request ",
     icon: IconUserOff,
-    href: "/authentication/login",
+    href: "/leave-request",
   },
   {
     navlabel: true,
@@ -82,9 +87,19 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
-    title: "Payroll List",
-    icon: IconList,
-    href: "/authentication/login",
+    title: "Payroll",
+    icon: AccountBalanceWalletIcon,
+    href: "/payroll",
+  },
+  {
+    navlabel: true,
+    subheader: "Attention",
+  },
+  {
+    id: uniqueId(),
+    title: "Attention",
+    icon: PublishedWithChangesIcon,
+    href: "/attention",
   },
   {
     navlabel: true,

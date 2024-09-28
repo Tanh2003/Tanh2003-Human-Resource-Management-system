@@ -21,3 +21,33 @@ interface IEmployee {
   leaveBalance: string;
 }
 
+
+interface IPosition {
+  name: string;
+
+}
+
+interface IDepartment {
+  name: string;
+}
+
+interface IPayroll {
+  salary: string;
+  bonus: string;
+  deductions: string;
+  pay_date: string;
+}
+
+interface ILeaveRequest {
+  start_date: string;
+  end_date: string;
+  status: string;
+  reason: string;
+}
+
+
+interface IAttendance {
+  date: string;
+  check_in: string;
+  check_out: string;
+}
