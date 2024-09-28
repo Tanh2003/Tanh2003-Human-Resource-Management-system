@@ -66,6 +66,12 @@ const handleListPosition = (inputId: string | number): Promise<any> => {
   return axios.get(`/api/get-all-Position?id=${inputId}`);
 };
 
+
+
+const handleListDepartmentOfPosition = (inputId: string | number): Promise<any> => {
+  return axios.get(`/api/get-Department-Of-Position?id=${inputId}`);
+};
+
 const handleAddPosition = (data: IPosition): Promise<any> => {
   return axios.post("/api/create-Position", data);
 };
@@ -180,6 +186,7 @@ export {
     handleDeleteEmployees,
    //api Position
     handleListPosition,
+    handleListDepartmentOfPosition,
     handleAddPosition,
     handleUpdatePosition,
     handleDeletePosition,

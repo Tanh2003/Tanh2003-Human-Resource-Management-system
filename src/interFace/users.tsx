@@ -7,14 +7,15 @@ interface IUser {
 }
 
 interface IEmployee {
-  employeesId:string;
-  userId:string;
+  employeesId: string;
+  userId: string;
   fullName: string;
   age: string;
   gender: string;
   birthday: string;
   phonenumber: string;
   department: string;
+  departmentvip:string
   position: string;
   salary: string;
   hireDate: string;
@@ -24,7 +25,7 @@ interface IEmployee {
 
 interface IPosition {
   name: string;
-
+  department_id:string;
 }
 
 interface IDepartment {

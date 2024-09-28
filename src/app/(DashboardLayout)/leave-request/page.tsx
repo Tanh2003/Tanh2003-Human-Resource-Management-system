@@ -391,17 +391,24 @@ const LeaveRequest = () => {
               </Grid>
 
               <Grid item xs={4}>
-                <TextField
-                  fullWidth
-                  id="status"
-                  name="status"
-                  label="Status"
-                  type="text"
-                  value={formik.values.status}
-                  onChange={formik.handleChange}
-                  error={formik.touched.status && Boolean(formik.errors.status)}
-                  helperText={formik.touched.status && formik.errors.status}
-                />
+                <FormControl fullWidth>
+                  <InputLabel id="status-label">Status</InputLabel>
+                  <Select
+                    labelId="status-label"
+                    id="status"
+                    name="status"
+                    label="Status"
+                    value={formik.values.status}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.status && Boolean(formik.errors.status)
+                    }
+                  >
+                    <MenuItem value="pending">Pending</MenuItem>
+                    <MenuItem value="approved">Approved</MenuItem>
+                    <MenuItem value="denied">Denied</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
 
               <Grid item xs={4}>

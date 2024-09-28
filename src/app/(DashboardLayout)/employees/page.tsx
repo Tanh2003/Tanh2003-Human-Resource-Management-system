@@ -9,6 +9,8 @@ import {
   handleDeleteEmployees,
   handleUpdateEmployees,
   handleListAccount,
+  handleListDepartment,
+  handleListDepartmentOfPosition,
 } from "../../../ServicesAdmin";
 import CircularProgress from "@mui/material/CircularProgress";
 import {
@@ -25,6 +27,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  SelectChangeEvent,
 } from "@mui/material";
 import { useFormik, FormikProps } from "formik";
 import * as yup from "yup";
@@ -67,11 +70,58 @@ const Employees = () => {
   const [update, setUpdate] = React.useState(false);
   const [EmployeesId, setEmployeesId] = React.useState("");
   const [userOptions, setUserOptions] = React.useState([]);
+  const [departmentOptions, setDepartmentOptions] = React.useState([]);
+  const [departmentId, setDepartmentId] = React.useState("");
+  const [departmentOfOptions, setDepartmentOfOptions] = React.useState([]);
 
   React.useEffect(() => {
     getEmployeesData();
     getUserData();
-  }, []);
+    getDepartmentData();
+    if (departmentId) {
+      console.log("ID nè: " + departmentId);
+      getDepartmentOfPositionData();
+    } else {
+      console.log("Chưa nhận được giá trị");
+    }
+  }, [departmentId]);
+
+    const getDepartmentData = async () => {
+      try {
+        const response = await handleListDepartment("ALL");
+        if (response.errCode === 0) {
+          const department = response.allDepartment.map((department: any) => ({
+            _id: department._id,
+            name: department.name,
+          }));
+          setDepartmentOptions(department);
+        }
+      } catch (error) {
+        console.error("Error fetching data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+const getDepartmentOfPositionData = async () => {
+  try {
+    const response = await handleListDepartmentOfPosition(departmentId);
+    if (response.errCode === 0 && response.allPosition?.length > 0) {
+      const positions = response.allPosition.map((position: any) => ({
+        _id: position._id,
+        name: position.name,
+      }));
+      setDepartmentOfOptions(positions);
+    } else {
+      setDepartmentOfOptions([]); // Trường hợp không có dữ liệu
+    }
+  } catch (error) {
+    console.error("Error fetching data", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+    
 
   const getEmployeesData = async () => {
     try {
@@ -224,12 +274,14 @@ const handleRowClick = (row: any) => {
       birthday: "",
       phonenumber: "",
       department: "",
+      departmentvip:"",
       position: "",
       salary: "",
       hireDate: "",
       leaveBalance: "",
     },
     validationSchema: validationSchema,
+   
     onSubmit: (values, { resetForm }) => {
       update ? handleUpdate(values) : handleAdd(values);
       getEmployeesData();
@@ -237,6 +289,23 @@ const handleRowClick = (row: any) => {
       resetForm();
     },
   });
+
+
+const handleDepartmentChange = async (event: SelectChangeEvent<string>) => {
+  const selectedDepartment = event.target.value;
+  
+  // Tách chuỗi thành departmentId và departmentName
+  const [departmentIdvip, departmentName] = selectedDepartment.split("|");
+
+  // Chỉ lưu departmentName vào formik
+  formik.setFieldValue("departmentvip", selectedDepartment);
+  formik.setFieldValue("department", departmentName);
+
+  // Lưu departmentId nếu cần cho logic khác
+  setDepartmentId(departmentIdvip);
+};
+
+
 
   const handleClickOpen = () => {
     setUpdate(false);
@@ -412,37 +481,54 @@ const handleRowClick = (row: any) => {
                   }
                 />
               </Grid>
+
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="department"
-                  name="department"
-                  label="Department"
-                  value={formik.values.department}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.department &&
-                    Boolean(formik.errors.department)
-                  }
-                  helperText={
-                    formik.touched.department && formik.errors.department
-                  }
-                />
+                <FormControl fullWidth>
+                  <InputLabel id="department_id-label">Department</InputLabel>
+                  <Select
+                    labelId="department_id-label"
+                    id="departmentvip"
+                    name="departmentvip"
+                    label="Department"
+                    value={formik.values.departmentvip}
+                    onChange={handleDepartmentChange} // Gọi hàm xử lý sự thay đổi
+                  >
+                    {/* Hiển thị danh sách các bộ phận từ departmentOptions */}
+                    {departmentOptions.map((department: any) => (
+                      <MenuItem
+                        key={department._id}
+                        value={`${department._id}|${department.name}`}
+                      >
+                        {department.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="position"
-                  name="position"
-                  label="Position"
-                  value={formik.values.position}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.position && Boolean(formik.errors.position)
-                  }
-                  helperText={formik.touched.position && formik.errors.position}
-                />
+                <FormControl fullWidth>
+                  <InputLabel id="position-label">Position</InputLabel>
+                  <Select
+                    labelId="position-label"
+                    id="position"
+                    name="position"
+                    label="Positions"
+                    value={formik.values.position || ""} // Đặt giá trị mặc định nếu không có
+                    onChange={formik.handleChange} // Gọi hàm xử lý sự thay đổi
+                  >
+                    {departmentOfOptions.length > 0 ? (
+                      departmentOfOptions.map((position: any) => (
+                        <MenuItem key={position._id} value={position.name}>
+                          {position.name}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem disabled>Không có vị trí nào</MenuItem> // Trường hợp không có dữ liệu
+                    )}
+                  </Select>
+                </FormControl>
               </Grid>
+
               <Grid item xs={6}>
                 <TextField
                   fullWidth

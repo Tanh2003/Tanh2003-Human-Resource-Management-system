@@ -8,6 +8,7 @@ import {
   handleAddPosition,
   handleDeletePosition,
   handleUpdatePosition,
+  handleListDepartment,
 } from "../../../ServicesAdmin";
 import "../../../interFace/users";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -46,10 +47,12 @@ const Position = () => {
   const [open, setOpen] = React.useState(false);
   const [update, setUpdate] = React.useState(false);
   const [PositionId, setPositionId] = React.useState("");
+  const [departmentOptions, setDepartmentOptions] = React.useState([]);
 
   // Gọi API khi component được render lần đầu tiên
   React.useEffect(() => {
     getPositionData();
+    getDepartmentData();
   }, []);
 
   const getPositionData = async () => {
@@ -62,6 +65,7 @@ const Position = () => {
             id: index + 1,
             _id: Position._id,
             name: Position.name,
+            department_id:Position.department_id.name,
           })
         );
         setRows(Position);
@@ -80,7 +84,24 @@ const Position = () => {
         const Position = response.allPosition;
         formik.setValues({
           name: Position.name,
+          department_id: Position.department_id._id,
         });
+      }
+    } catch (error) {
+      console.error("Error fetching data", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const getDepartmentData = async () => {
+    try {
+      const response = await handleListDepartment("ALL");
+      if (response.errCode === 0) {
+        const department = response.allDepartment.map((department: any) => ({
+          _id: department._id,
+          name: department.name,
+        }));
+        setDepartmentOptions(department);
       }
     } catch (error) {
       console.error("Error fetching data", error);
@@ -137,7 +158,8 @@ const Position = () => {
   const columns = React.useMemo(
     () => [
       { field: "id", headerName: "ID", width: 70 },
-      { field: "name", headerName: "Name", width: 200 },
+      { field: "name", headerName: "Name Position", width: 200 },
+      { field: "department_id", headerName: "Name Department", width: 200 },
       {
         field: "Action",
         headerName: "Action",
@@ -176,6 +198,7 @@ const Position = () => {
     console.log("them" + update);
     formik.setValues({
       name: "",
+      department_id: "",
     });
   };
 
@@ -185,6 +208,7 @@ const Position = () => {
   const handleAdd = async (data: any) => {
     await postPositionData({
       name: data.name,
+      department_id: data.department_id,
     });
     await getPositionData();
   };
@@ -201,6 +225,7 @@ const Position = () => {
     await putPositionData({
       PositionId: PositionId,
       name: data.name,
+      department_id: data.department_id,
     });
     await getPositionData();
   };
@@ -216,6 +241,7 @@ const Position = () => {
       ? {
           initialValues: {
             name: "",
+            department_id: "",
           },
           validationSchema: validationSchema,
           onSubmit: (values, { resetForm }) => {
@@ -228,6 +254,7 @@ const Position = () => {
       : {
           initialValues: {
             name: "",
+            department_id: "",
           },
           validationSchema: validationSchema,
           onSubmit: (values, { resetForm }) => {
@@ -298,6 +325,26 @@ const Position = () => {
                   error={formik.touched.name && Boolean(formik.errors.name)}
                   helperText={formik.touched.name && formik.errors.name}
                 />
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="department_id-label">Department</InputLabel>
+                  <Select
+                    labelId="department_id"
+                    id="department_id"
+                    name="department_id"
+                    label="Department"
+                    value={formik.values.department_id}
+                    onChange={formik.handleChange}
+                  >
+                    {/* Hiển thị danh sách người dùng từ userOptions */}
+                    {departmentOptions.map((department: any) => (
+                      <MenuItem key={department._id} value={department._id}>
+                        {department.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
             </Grid>
           </form>
