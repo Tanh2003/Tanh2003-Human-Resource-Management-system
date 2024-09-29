@@ -3,16 +3,13 @@ import { PieChart } from "@mui/x-charts/PieChart";
 import { Container, Paper, Typography, Box } from "@mui/material";
 import { handleListPayroll } from "@/ServicesAdmin";
 
-
-
-
 interface Payroll {
   employee_id: string;
   salary: number;
   bonus: number;
 }
 
-const BasicPie: React.FC = () => {
+const Bonus: React.FC = () => {
   const [payrollOptions, setPayrollOptions] = React.useState<Payroll[]>([]);
 
   React.useEffect(() => {
@@ -37,32 +34,32 @@ const BasicPie: React.FC = () => {
 
   // Đếm số lượng nhân viên theo các mức lương
   const salaryCounts = {
-    "3tr": 0,
-    "8tr": 0,
-    "10tr": 0,
+    "3%": 0,
+    "10%": 0,
+    "20%": 0,
   };
 
   payrollOptions.forEach((payrollOption) => {
-    if (payrollOption.salary > 10000000) {
-      salaryCounts["10tr"] += 1;
-    } else if (payrollOption.salary < 8000000) {
-      salaryCounts["8tr"] += 1;
-    } else if (payrollOption.salary > 3000000) {
-      salaryCounts["3tr"] += 1;
+    if (payrollOption.bonus > 3) {
+      salaryCounts["3%"] += 1;
+    } else if (payrollOption.bonus < 10) {
+      salaryCounts["10%"] += 1;
+    } else if (payrollOption.bonus > 20) {
+      salaryCounts["20%"] += 1;
     }
   });
 
   const pieData = [
-    { id: "> 3tr", value: salaryCounts["3tr"], color: "#ff6384" },
-    { id: "< 8tr", value: salaryCounts["8tr"], color: "#36a2eb" },
-    { id: "> 10tr", value: salaryCounts["10tr"], color: "#ffce56" },
+    { id: "> 3%", value: salaryCounts["3%"], color: "#76BB68" },
+    { id: "< 10%", value: salaryCounts["10%"], color: "#48335E" },
+    { id: "> 20%", value: salaryCounts["20%"], color: "#F4BFD4" },
   ];
 
   return (
     <Container>
       <Paper elevation={3} style={{ padding: "16px", margin: "20px" }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Employees Salary Chart (Currency unit VND)
+          Employees Bonus Chart ( unit Percent)
         </Typography>
         <Box display="flex" flexDirection="column" alignItems="center">
           <PieChart series={[{ data: pieData }]} width={400} height={200} />
@@ -101,4 +98,4 @@ const BasicPie: React.FC = () => {
   );
 };
 
-export default BasicPie;
+export default Bonus;

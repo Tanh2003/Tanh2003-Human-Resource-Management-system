@@ -1,5 +1,5 @@
-import React from 'react';
-import { Box, AppBar, Toolbar, styled, Stack, IconButton, Badge, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, AppBar, Toolbar, styled, Stack, IconButton, Badge, Button, Link } from '@mui/material';
 import PropTypes from 'prop-types';
 import {usePathname, useRouter} from 'next/navigation';
 import Menuitems from "@/app/(DashboardLayout)/layout/sidebar/MenuItems";
@@ -10,10 +10,11 @@ import Profile from './Profile';
 import { IconBellRinging, IconMenu } from '@tabler/icons-react';
 import Typography from "@mui/material/Typography";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Link from "@mui/material/Link";
+
 import HomeIcon from "@mui/icons-material/Home";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import GrainIcon from "@mui/icons-material/Grain";
+import { useUser } from "@/app/context/UserContext";
 
 interface ItemType {
   toggleMobileSidebar:  (event: React.MouseEvent<HTMLElement>) => void;
@@ -22,10 +23,10 @@ interface ItemType {
 const Header = ({toggleMobileSidebar}: ItemType) => {
   // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
-  function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    event.preventDefault();
-    console.info("You clicked a breadcrumb.");
-  }
+  // function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+  //   event.preventDefault();
+  //   console.info("You clicked a breadcrumb.");
+  // }
 
   const pathname = usePathname();
 
@@ -48,16 +49,28 @@ const Header = ({toggleMobileSidebar}: ItemType) => {
     color: theme.palette.text.secondary,
   }));
 
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const { user } = useUser(); // Lấy thông tin người dùng từ context
   return (
     <AppBarStyled position="sticky" color="default">
       <ToolbarStyled>
-        <div role="presentation" onClick={handleClick}>
+        <div role="presentation">
           <Breadcrumbs aria-label="breadcrumb">
             <Link
               underline="hover"
               sx={{ display: "flex", alignItems: "center" }}
               color="inherit"
-              href="/ "
+              href="/"
             >
               <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
               Home
@@ -66,7 +79,7 @@ const Header = ({toggleMobileSidebar}: ItemType) => {
               underline="hover"
               sx={{ display: "flex", alignItems: "center" }}
               color="inherit"
-              href={`/${title}`}
+              // href={`/${title}`}
             >
               <WhatshotIcon sx={{ mr: 0.5 }} fontSize="inherit" />
               {title}
@@ -101,6 +114,17 @@ const Header = ({toggleMobileSidebar}: ItemType) => {
               <IconBellRinging size="21" stroke="1.5" />
             </Badge>
           </IconButton>
+          <Box display="flex" alignItems="center">
+            <Typography variant="h6" style={{ marginRight: "8px" }}>
+              Welcome,
+            </Typography>
+            {user ? (
+              <Typography variant="body1">{user.email}</Typography>
+            ) : (
+              <Typography variant="body1">You are not logged in.</Typography>
+            )}
+          </Box>
+
           <Profile />
         </Stack>
       </ToolbarStyled>

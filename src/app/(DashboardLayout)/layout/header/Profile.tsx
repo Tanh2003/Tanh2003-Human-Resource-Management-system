@@ -10,16 +10,27 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-
 import { IconListCheck, IconMail, IconUser } from "@tabler/icons-react";
+import { useUser } from "@/app/context/UserContext"; // Import hook useUser
+import { useRouter } from "next/navigation";
 
 const Profile = () => {
+  const router = useRouter();
   const [anchorEl2, setAnchorEl2] = useState(null);
+  const { logout } = useUser(); // Lấy hàm logout từ UserContext
+
   const handleClick2 = (event: any) => {
     setAnchorEl2(event.currentTarget);
   };
   const handleClose2 = () => {
     setAnchorEl2(null);
+  };
+
+  const handleLogout = () => {
+    logout(); // Gọi hàm logout khi nhấn nút
+    router.replace("/authentication/login");
+
+    handleClose2(); // Đóng menu
   };
 
   return (
@@ -46,9 +57,6 @@ const Profile = () => {
           }}
         />
       </IconButton>
-      {/* ------------------------------------------- */}
-      {/* Message Dropdown */}
-      {/* ------------------------------------------- */}
       <Menu
         id="msgs-menu"
         anchorEl={anchorEl2}
@@ -83,10 +91,9 @@ const Profile = () => {
         </MenuItem>
         <Box mt={1} py={1} px={2}>
           <Button
-            href="/authentication/login"
             variant="outlined"
             color="primary"
-            component={Link}
+            onClick={handleLogout} // Sử dụng handleLogout
             fullWidth
           >
             Logout

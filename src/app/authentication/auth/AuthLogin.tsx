@@ -13,6 +13,7 @@ import Link from "next/link";
 
 import CustomTextField from "@/app/(DashboardLayout)/components/forms/theme-elements/CustomTextField";
 
+
 interface loginType {
   title?: string;
   subtitle?: JSX.Element | JSX.Element[];
@@ -23,12 +24,12 @@ interface loginType {
 const AuthLogin = ({ title, subtitle, subtext, onSubmit }: loginType) => {
   const [email, setEmail] = useState(""); // State để lưu email
   const [password, setPassword] = useState(""); // State để lưu password
+   
   
 
   // Hàm xử lý khi nhấn Sign In
   const handleSubmit = () => {
     onSubmit(email, password); // Gọi hàm onSubmit và truyền dữ liệu
- 
   };
 
   return (

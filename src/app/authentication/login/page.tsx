@@ -1,6 +1,5 @@
 "use client";
 import { Grid, Box, Card, Stack, Typography, Alert } from "@mui/material";
-// components
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
 import AuthLogin from "../auth/AuthLogin";
@@ -8,31 +7,41 @@ import { handleSignIn } from "@/ServicesAdmin";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/app/context/UserContext";
 
 const Login2 = () => {
   const router = useRouter();
-  const [message, setMessage] = useState<string | null>(null); // State quản lý thông báo
-  const [error, setError] = useState<boolean>(false); // State quản lý thông báo lỗi hay thành công
-  
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<boolean>(false);
+  const { setUser } = useUser();
+
   const postUserData = async (email: string, password: string) => {
     try {
       const response = await handleSignIn(email, password);
 
       if (response.errCode === 0) {
-        setMessage("Sign In successfully!"); // Thông báo thành công
+        setMessage("Sign In successfully!");
         toast.success(response.errMessage);
+
+        // Lưu thông tin người dùng vào context (chỉ lưu các trường cần thiết)
+        const userData = {
+          _id: response.user._id,
+          email: response.user.email,
+          role: response.user.role,
+          isActive: response.user.isActive,
+        };
+
+        setUser(userData); // Lưu thông tin người dùng vào context
         router.push("/");
 
-        setError(false); // Không phải là lỗi
-        // Xử lý điều hướng hoặc các bước tiếp theo nếu cần
+        setError(false);
       } else {
         toast.error(response.errMessage);
-        console.log();
-        setMessage(response.errMessage); // Hiển thị thông báo lỗi từ server
-        setError(true); // Đây là thông báo lỗi
+        setMessage(response.errMessage);
+        setError(true);
       }
     } catch (error) {
-      setMessage("Có lỗi xảy ra. Vui lòng thử lại."); // Thông báo lỗi nếu có ngoại lệ
+      setMessage("Có lỗi xảy ra. Vui lòng thử lại.");
       setError(true);
       console.error("Error fetching data", error);
     }
@@ -78,7 +87,6 @@ const Login2 = () => {
               <Box display="flex" alignItems="center" justifyContent="center">
                 <Logo />
               </Box>
-              {/* Hiển thị thông báo lỗi hoặc thành công */}
               {message && (
                 <Alert
                   severity={error ? "error" : "success"}
@@ -89,7 +97,7 @@ const Login2 = () => {
               )}
 
               <AuthLogin
-                onSubmit={postUserData} // Truyền hàm postUserData vào AuthLogin
+                onSubmit={postUserData}
                 subtext={
                   <Typography
                     variant="subtitle1"
@@ -112,7 +120,7 @@ const Login2 = () => {
                       variant="h6"
                       fontWeight="500"
                     >
-                      Desgin by Nguyễn Tuấn Anh
+                      Design by Nguyễn Tuấn Anh
                     </Typography>
                   </Stack>
                 }

@@ -117,22 +117,7 @@ const Menuitems = [
     icon: IconUserPlus,
     href: "/authentication/register",
   },
-  {
-    navlabel: true,
-    subheader: "Extra",
-  },
-  {
-    id: uniqueId(),
-    title: "Icons",
-    icon: IconMoodHappy,
-    href: "/icons",
-  },
-  {
-    id: uniqueId(),
-    title: "Danh sách nhân viên",
-    icon: IconAperture,
-    href: "/sample-page",
-  },
+
 ];
 
 export default Menuitems;
