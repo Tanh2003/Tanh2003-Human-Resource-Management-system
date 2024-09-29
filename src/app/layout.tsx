@@ -5,6 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserProvider } from "./context/UserContext";
+
 export default function RootLayout({
   children,
 }: {
@@ -17,7 +18,6 @@ export default function RootLayout({
           <ThemeProvider theme={baselightTheme}>
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
-
             {children}
           </ThemeProvider>
           <ToastContainer

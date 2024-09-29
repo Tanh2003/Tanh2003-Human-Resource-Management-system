@@ -11,8 +11,7 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 
-import CustomTextField from "@/app/(DashboardLayout)/components/forms/theme-elements/CustomTextField";
-
+import CustomTextField from "@/app/(Admin)/components/forms/theme-elements/CustomTextField";
 
 interface loginType {
   title?: string;
@@ -24,8 +23,6 @@ interface loginType {
 const AuthLogin = ({ title, subtitle, subtext, onSubmit }: loginType) => {
   const [email, setEmail] = useState(""); // State để lưu email
   const [password, setPassword] = useState(""); // State để lưu password
-   
-  
 
   // Hàm xử lý khi nhấn Sign In
   const handleSubmit = () => {
@@ -96,7 +93,7 @@ const AuthLogin = ({ title, subtitle, subtext, onSubmit }: loginType) => {
           </FormGroup>
           <Typography
             component={Link}
-            href="/"
+            href="/dashboard"
             fontWeight="500"
             sx={{
               textDecoration: "none",

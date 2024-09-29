@@ -1,7 +1,7 @@
 "use client";
 import { Grid, Box, Card, Stack, Typography, Alert } from "@mui/material";
-import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
-import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
+import PageContainer from "@/app/(Admin)/components/container/PageContainer";
+import Logo from "@/app/(Admin)/layout/shared/logo/Logo";
 import AuthLogin from "../auth/AuthLogin";
 import { handleSignIn } from "@/ServicesAdmin";
 import { useState } from "react";
@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/app/context/UserContext";
 
 const Login2 = () => {
+  const { user } = useUser(); 
   const router = useRouter();
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<boolean>(false);
@@ -32,7 +33,12 @@ const Login2 = () => {
         };
 
         setUser(userData); // Lưu thông tin người dùng vào context
-        router.push("/");
+         if (userData.role === "admin") {
+           router.push("/dashboard");
+         } else if (userData.role === "user") {
+           router.push("/user-dashboard");
+         }
+        
 
         setError(false);
       } else {

@@ -40,6 +40,10 @@ const handleListEmployees = (inputId: string | number): Promise<any> => {
   return axios.get(`/api/get-all-employee?id=${inputId}`);
 };
 
+const handleUserEmployees = (inputId: string | number): Promise<any> => {
+  return axios.get(`/api/get-user-employee?id=${inputId}`);
+};
+
 const handleAddEmployees = (data: any): Promise<any> => {
   return axios.post("/api/create-employee", data);
 };
@@ -133,6 +137,10 @@ const handleListLeaveRequest = (inputId: string | number): Promise<any> => {
   return axios.get(`/api/get-all-LeaveRequest?id=${inputId}`);
 };
 
+const handleListIDLeaveRequest = (inputId: string | number): Promise<any> => {
+  return axios.get(`/api/get-id-LeaveRequest?id=${inputId}`);
+};
+
 const handleAddLeaveRequest = (data: ILeaveRequest): Promise<any> => {
   return axios.post("/api/create-LeaveRequest", data);
 };
@@ -181,6 +189,7 @@ export {
     handleDeleteAccount,
     // api employees
     handleListEmployees,
+    handleUserEmployees,
     handleAddEmployees,
     handleUpdateEmployees,
     handleDeleteEmployees,
@@ -202,6 +211,7 @@ export {
     handleDeletePayroll,
     //api LeaveRequest
     handleListLeaveRequest,
+    handleListIDLeaveRequest,
     handleAddLeaveRequest,
     handleUpdateLeaveRequest,
     handleDeleteLeaveRequest,
