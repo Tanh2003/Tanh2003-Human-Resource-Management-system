@@ -10,6 +10,8 @@ Thông tin đăng nhập:
 - Email: admin@gmail.com
 - Password: Aa@123
 
+##Lưu ý:
+ Vì mình deploy free ở sever nên cứ 15 phút nó phải chạy lại sever 1 lần nếu bạn không đăng nhập được xin hãy đợi 1 vài phút sau đó sẽ đăng nhập được thôi nha :>
 
 ## Sau đây là các bước để chạy website sẽ gồm 2 phần lần lượt là FE và BE:
 ### Đây là hướng dẫn run project ở FE:
