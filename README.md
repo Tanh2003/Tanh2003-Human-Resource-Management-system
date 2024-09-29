@@ -8,7 +8,7 @@ Tôi đang sử dụng Next.js 14 và Nodejs Express và dùng MongoDB để xâ
 ## Trải nghiệm website của tôi [tại đây](https://tanh2003-human-resource-management-system.vercel.app).
 Thông tin đăng nhập:
 - Email: admin@gmail.com
-- Password: A@123
+- Password: Aa@123
 
 
 ## Sau đây là các bước để chạy website sẽ gồm 2 phần lần lượt là FE và BE:
