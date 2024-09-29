@@ -11,33 +11,56 @@ Tôi đang sử dụng Next.js 14 và Nodejs Express và dùng MongoDB để xâ
 ### Đây là hướng dẫn run project ở FE:
 Bước: 1
  - Bạn phải tải source code  từ github của tôi về.
+
 Bước: 2
+
  - Sau đó bạn phải cài môi trường nodejs bản 20.4.0
+
 Bước: 3
+
  - Tiếp tục bạn  hãy mở source code bằng Visual Studio Code và bận Terminal lên
+
 Bước: 4
+
  - Bạn dùng câu lệnh là npm install để cài các package của project
+
 Bước: 5
+
  - Bạn hãy kiểm tra  file .env xem có biến môi trường như này chưa NEXT_PUBLIC_API_BE_HR="https://nguyentuananh-be-human-resource-manager.onrender.com"
+
 Bước: 6
+
  - Biến môi trường này là để gọi API từ backend. ở đây thì tôi đã setup và deploy rồi nên nếu bạn chạy localhost thì bạn hãy  đổi thành http://localhost:8080
+
 Bước: 7
+
   - Bạn dùng câu lệnh là npm run dev để run project thì nó sẽ ở cổng http://localhost:3000/ bạn hãy truy cập vào cổng này.
 
 ### Đây là hướng dẫn run project ở BE:
 Bước: 1
  - Bạn phải tải source code  từ github BE của tôi về [tại đây](https://github.com/Tanh2003/BE_Human_Resource).
 Bước: 2
- - Sau đó bạn phải cài môi trường nodejs bản 20.4.0 nếu đã cài rồi thì thôi 
+
+ - Sau đó bạn phải cài môi trường nodejs bản 20.4.0 nếu đã cài rồi thì thôi
+
 Bước: 3
+
  - Tiếp tục bạn  hãy mở source code bằng Visual Studio Code và bận Terminal lên
+
 Bước: 4
+
  - Bạn dùng câu lệnh là npm install để cài các package của project
+
 Bước: 5
+
  - Bạn hãy kiểm tra  file .env xem có biến môi trường chưa nếu chưa hãy mở file .env example  và tạo file .env trong cây thư mục src nhá
+
 Bước: 7
+
   - Bạn dùng câu lệnh là npm run dev để run project  thì lúc này các API đã hoạt động để FE sử dụng rùi nha.
+
 ### Lưu ý:
+
 - Bạn phải chạy 2 project FE  và BE riêng nha không thì không lên website được đâu
 
 ### Các chức năng chính
