@@ -58,7 +58,7 @@ User
 ## Hình ảnh 
 <p>
   
-<img src="https://res.cloudinary.com/ddaxowlyn/image/upload/v1727619246/hr_manager/15_fsjnv0.png" alt="Splash View" width="200">
+<img src="https://res.cloudinary.com/ddaxowlyn/image/upload/v1727619246/hr_manager/15_fsjnv0.png?raw=true" alt="Splash View" width="200">
 <img src="https://github.com/Tanh2003/host-file-anh/blob/main/Images_TechPhone/dangnhap.jpg?raw=true" alt="Home View" width="200">
 <img src="https://github.com/Tanh2003/host-file-anh/blob/main/Images_TechPhone/dangky.jpg?raw=true" alt="NavDrawer View" width="200">
 <img src="https://github.com/Tanh2003/host-file-anh/blob/main/Images_TechPhone/quenmatkhau.jpg?raw=true" alt="NavDrawer View Login" width="200">
