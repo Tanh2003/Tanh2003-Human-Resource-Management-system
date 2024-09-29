@@ -187,9 +187,8 @@ const formatDate = (isoDateString: string): string => {
                 <PaidIcon />
               </Icon>
               <Typography variant="h6">
-                {" "}
                 {/* Tăng kích thước */}
-                <strong>Salary:</strong> ${employee.salary}
+                <strong>Salary:</strong> {employee.salary.toLocaleString()} VNĐ
               </Typography>
             </Box>
           </Grid>

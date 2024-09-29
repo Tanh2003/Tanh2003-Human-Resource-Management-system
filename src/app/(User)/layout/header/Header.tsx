@@ -79,7 +79,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
               underline="hover"
               sx={{ display: "flex", alignItems: "center" }}
               color="inherit"
-              href="/dashboard"
+              href="/user-dashboard"
             >
               <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
               Home

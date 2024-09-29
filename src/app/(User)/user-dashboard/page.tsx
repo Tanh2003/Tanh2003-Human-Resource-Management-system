@@ -17,7 +17,7 @@ const Dashboard = () => {
             </Container>
           </Grid>
           <Grid item xs={12} lg={4}></Grid>
-          <Grid item xs={12} lg={12}>
+          {/* <Grid item xs={12} lg={12}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <Typography>Hello đây là trang user</Typography>
@@ -26,7 +26,7 @@ const Dashboard = () => {
                 <Typography>Hello đây là trang user</Typography>
               </Grid>
             </Grid>
-          </Grid>
+          </Grid> */}
           {/* <Grid item xs={12} lg={12}>
             <ProductPerformance />
           </Grid>

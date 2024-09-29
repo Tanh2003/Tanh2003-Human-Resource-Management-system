@@ -111,7 +111,7 @@ const Login2 = () => {
                     color="textSecondary"
                     mb={1}
                   >
-                    Chào mừng bạn đến với manager HR
+                    Welcome to you manager HR
                   </Typography>
                 }
                 subtitle={

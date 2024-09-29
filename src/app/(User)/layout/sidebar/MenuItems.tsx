@@ -45,16 +45,16 @@ const Menuitems = [
     icon: IconList,
     href: "/project",
   },
-  {
-    navlabel: true,
-    subheader: "Auth",
-  },
-  {
-    id: uniqueId(),
-    title: "Log out",
-    icon: IconLogout2,
-    href: "/",
-  },
+  // {
+  //   navlabel: true,
+  //   subheader: "Auth",
+  // },
+  // {
+  //   id: uniqueId(),
+  //   title: "Log out",
+  //   icon: IconLogout2,
+  //   href: "/",
+  // },
 ];
 
 export default Menuitems;

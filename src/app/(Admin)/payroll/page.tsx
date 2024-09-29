@@ -62,15 +62,28 @@ const Payroll = () => {
       const response = await handleListPayroll("ALL");
       if (response.errCode === 0) {
         const Payroll = response.allPayroll.map(
-          (Payroll: any, index: number) => ({
-            id: index + 1,
-            _id: Payroll._id,
-            employee_id: Payroll.employee_id.employeesId,
-            salary: Payroll.salary,
-            bonus: Payroll.bonus,
-            deductions: Payroll.deductions,
-            pay_date: new Date(Payroll.pay_date).toLocaleDateString("en-GB"),
-          })
+          (Payroll: any, index: number) => {
+            // Chuyển đổi salary thành tiền VNĐ (giả sử salary gốc là USD)
+           
+
+            // Tính bonus và deductions theo % salary
+            const bonusPercent = (Payroll.bonus);
+            const deductionPercent =
+              (Payroll.deductions);
+
+            return {
+              id: index + 1,
+              _id: Payroll._id,
+              employee_id: Payroll.employee_id.employeesId,
+              salary: Payroll.salary.toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }),
+              bonus: `${bonusPercent.toFixed(2)}%`, // Bonus là % của salary
+              deductions: `${deductionPercent.toFixed(2)}%`, // Deductions là % của salary
+              pay_date: new Date(Payroll.pay_date).toLocaleDateString("en-GB"),
+            };
+          }
         );
         setRows(Payroll);
       }
@@ -80,6 +93,7 @@ const Payroll = () => {
       setLoading(false);
     }
   };
+
 
   const getPayrollIdData = async (PayrollId: any) => {
     try {
@@ -166,12 +180,12 @@ const Payroll = () => {
 
   const columns = React.useMemo(
     () => [
-      { field: "id", headerName: "ID", width: 70 },
-      { field: "employee_id", headerName: "Employee ID", width: 200 },
-      { field: "salary", headerName: "Salary", width: 200 },
-      { field: "bonus", headerName: "Bonus", width: 200 },
-      { field: "deductions", headerName: "Deductions", width: 200 },
-      { field: "pay_date", headerName: "Pay_date", width: 200 },
+      { field: "id", headerName: "ID", width: 50 },
+      { field: "employee_id", headerName: "Employee ID", width: 100 },
+      { field: "salary", headerName: "Salary", width: 150 },
+      { field: "bonus", headerName: "Bonus", width: 100 },
+      { field: "deductions", headerName: "Deductions", width: 100 },
+      { field: "pay_date", headerName: "Pay_date", width: 100 },
       {
         field: "Action",
         headerName: "Action",

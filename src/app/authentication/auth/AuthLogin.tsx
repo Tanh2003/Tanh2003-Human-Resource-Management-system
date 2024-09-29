@@ -93,7 +93,7 @@ const AuthLogin = ({ title, subtitle, subtext, onSubmit }: loginType) => {
           </FormGroup>
           <Typography
             component={Link}
-            href="/dashboard"
+            href="/authentication/login"
             fontWeight="500"
             sx={{
               textDecoration: "none",

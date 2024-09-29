@@ -224,14 +224,14 @@ const LeaveRequest = () => {
             >
               Edit
             </Button>
-            <Button
+            {/* <Button
               variant="contained"
               color="error"
               size="small"
               onClick={() => handleDelete(params.row)}
             >
               Delete
-            </Button>
+            </Button> */}
           </>
         ),
       },
