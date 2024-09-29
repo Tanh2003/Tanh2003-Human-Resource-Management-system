@@ -234,7 +234,7 @@ const Employees = () => {
   };
 
   const formatDate = (dateString: any) => {
-    const dateParts = dateString.split("/dashboard"); // Split the date by "/dashboard"
+    const dateParts = dateString.split("/"); // Split the date by "/dashboard"
     const day = dateParts[1].padStart(2, "0"); // Get day and ensure 2 digits
     const month = dateParts[0].padStart(2, "0"); // Get month and ensure 2 digits
     const year = dateParts[2]; // Get year
