@@ -3,13 +3,15 @@
 [![CI](https://github.com/CircuitVerse/mobile-app/actions/workflows/ci.yml/badge.svg)](https://github.com/CircuitVerse/mobile-app/actions/workflows/ci.yml)
 [![CD](https://github.com/CircuitVerse/mobile-app/actions/workflows/cd.yml/badge.svg)](https://github.com/CircuitVerse/mobile-app/actions/workflows/cd.yml)
 
-Tôi đang sử dụng Next.js 14 và Nodejs Express và dùng MongoDB để xây dựng một trang web quản lý nguồn nhân lực. Trang web của tôi được thiết kế nhằm tối ưu hóa quy trình quản lý nhân sự, bao gồm việc theo dõi thông tin nhân viên, xử lý yêu cầu nghỉ phép và quản lý bảng lương. Với giao diện thân thiện và dễ sử dụng, hệ thống của tôi giúp cải thiện hiệu quả trong công tác quản lý và nâng cao trải nghiệm cho người dùng.
+Tôi đang sử dụng Next.js phiên bản 14+ kết hợp với thư viện Material UI làm Front End và Nodejs Express làm Backend và dùng MongoDB lưu trữ dữ liệu để xây dựng một trang web quản lý nguồn nhân lực. Trang web của tôi được thiết kế nhằm tối ưu hóa quy trình quản lý nhân sự, bao gồm việc theo dõi thông tin nhân viên, xử lý yêu cầu nghỉ phép và quản lý bảng lương (có thể dùng được trên nhiều loại thiết bị đã responsive). Với giao diện thân thiện và dễ sử dụng, hệ thống của tôi giúp cải thiện hiệu quả trong công tác quản lý và nâng cao trải nghiệm cho người dùng.
 
 ## Trải nghiệm website của tôi [tại đây](https://tanh2003-human-resource-management-system.vercel.app).
 Thông tin đăng nhập:
 - Email: admin@gmail.com
 - Password: Aa@123
 
+##Lưu ý:
+ Vì mình deploy free ở sever nên cứ 15 phút nó phải chạy lại sever 1 lần nếu bạn không đăng nhập được xin hãy đợi 1 vài phút hoặc liên hệ với tôi qua zalo:0399121048 sau đó sẽ đăng nhập được thôi nha :>
 
 ## Sau đây là các bước để chạy website sẽ gồm 2 phần lần lượt là FE và BE:
 ### Đây là hướng dẫn run project ở FE:
@@ -17,8 +19,9 @@ Bước: 1
  - Bạn phải tải source code  từ github của tôi về.
 
 Bước: 2
-
+- Kiểm tra  xem máy đã có nodejs chưa bật terminal gõ dòng lệnh node -v nếu không có thì phải cài môi trường nodejs nha
  - Sau đó bạn phải cài môi trường nodejs bản 20.4.0
+
 
 Bước: 3
 
@@ -42,7 +45,9 @@ Bước: 7
 
 ### Đây là hướng dẫn run project ở BE:
 Bước: 1
+
  - Bạn phải tải source code  từ github BE của tôi về [tại đây](https://github.com/Tanh2003/BE_Human_Resource).
+
 Bước: 2
 
  - Sau đó bạn phải cài môi trường nodejs bản 20.4.0 nếu đã cài rồi thì thôi
@@ -59,7 +64,7 @@ Bước: 5
 
  - Bạn hãy kiểm tra  file .env xem có biến môi trường chưa nếu chưa hãy mở file .env example  và tạo file .env trong cây thư mục src nhá
 
-Bước: 7
+Bước: 6
 
   - Bạn dùng câu lệnh là npm run dev để run project  thì lúc này các API đã hoạt động để FE sử dụng rùi nha.
 
