@@ -33,7 +33,7 @@ Bước: 4
 
 Bước: 5
 
- - Bạn hãy kiểm tra  file .env xem có biến môi trường như này chưa NEXT_PUBLIC_API_BE_HR="https://nguyentuananh-be-human-resource-manager.onrender.com"
+ - Bạn hãy kiểm tra  file .env xem có biến môi trường như này chưa NEXT_PUBLIC_API_BE_HR="https://behumanresource-production.up.railway.app"
 
 Bước: 6
 
