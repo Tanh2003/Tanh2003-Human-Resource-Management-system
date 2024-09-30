@@ -3,7 +3,7 @@
 [![CI](https://github.com/CircuitVerse/mobile-app/actions/workflows/ci.yml/badge.svg)](https://github.com/CircuitVerse/mobile-app/actions/workflows/ci.yml)
 [![CD](https://github.com/CircuitVerse/mobile-app/actions/workflows/cd.yml/badge.svg)](https://github.com/CircuitVerse/mobile-app/actions/workflows/cd.yml)
 
-Tôi đang sử dụng Next.js phiên bản 14+ làm Front End và Nodejs Express làm Backend và dùng MongoDB lưu trữ dữ liệu để xây dựng một trang web quản lý nguồn nhân lực. Trang web của tôi được thiết kế nhằm tối ưu hóa quy trình quản lý nhân sự, bao gồm việc theo dõi thông tin nhân viên, xử lý yêu cầu nghỉ phép và quản lý bảng lương (có thể dùng được trên nhiều loại thiết bị đã responsive. Với giao diện thân thiện và dễ sử dụng, hệ thống của tôi giúp cải thiện hiệu quả trong công tác quản lý và nâng cao trải nghiệm cho người dùng.
+Tôi đang sử dụng Next.js phiên bản 14+ kết hợp với thư viện Material UI làm Front End và Nodejs Express làm Backend và dùng MongoDB lưu trữ dữ liệu để xây dựng một trang web quản lý nguồn nhân lực. Trang web của tôi được thiết kế nhằm tối ưu hóa quy trình quản lý nhân sự, bao gồm việc theo dõi thông tin nhân viên, xử lý yêu cầu nghỉ phép và quản lý bảng lương (có thể dùng được trên nhiều loại thiết bị đã responsive). Với giao diện thân thiện và dễ sử dụng, hệ thống của tôi giúp cải thiện hiệu quả trong công tác quản lý và nâng cao trải nghiệm cho người dùng.
 
 ## Trải nghiệm website của tôi [tại đây](https://tanh2003-human-resource-management-system.vercel.app).
 Thông tin đăng nhập:
